@@ -16,6 +16,27 @@ public class TCPClient {
 			//1. socket 생성
 			socket = new Socket();
 			
+			//1-1. Socket Buffer Size 확인
+			int receiveBufferSize = socket.getReceiveBufferSize();
+			int sendBufferSize = socket.getSendBufferSize();
+
+			System.out.println( receiveBufferSize + ":" + sendBufferSize);
+			
+			//1-2 Socket Buffer Size 변경
+			socket.setReceiveBufferSize( 10 * 1024 );
+			socket.setSendBufferSize( 10 * 1024 );
+
+			receiveBufferSize = socket.getReceiveBufferSize();
+			sendBufferSize = socket.getSendBufferSize();
+
+			System.out.println( receiveBufferSize + ":" + sendBufferSize);
+			
+			//1-3 SO_NODELAY( Nagle Algorithm off)
+			socket.setTcpNoDelay( true );
+			
+			//1-4 SO_TIMEOUT
+			socket.setSoTimeout( 1 );
+			
 			//2. 서버 연결
 			socket.connect( new InetSocketAddress( SERVER_IP, SERVER_PORT ) );
 			
